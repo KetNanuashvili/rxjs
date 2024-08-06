@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -17,13 +17,18 @@ export class RxjsComponent implements OnInit {
   }
 
 
+  subjectsArray = ['math', 'history', 'music', 'geography', 'science'];
+  subjectName : string;
+
   students: Observable <string[]> = of(this.studentsList);
 
   studentNames: Observable <string> = of ('keti');
 
   student$: Observable<any> = of(this.studentObj);
 
-  // students: Observable <string[]> = of(['mark', 'ram', 'sita', 'lisa'])
+
+  subjects$: Observable<string> = from (this.subjectsArray);
+
 
   ngOnInit(): void{
     this.students.subscribe (data=>{
@@ -37,7 +42,13 @@ export class RxjsComponent implements OnInit {
     });
 
     this.student$.subscribe(data=>{
-      console.log(data.id);
+      console.log(data);
+      
+    })
+
+    this.subjects$.subscribe(data=>{
+
+      this.subjectName = data;
       
     })
 

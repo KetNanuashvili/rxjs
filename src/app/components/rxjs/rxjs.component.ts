@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, viewChild, ViewChild } from '@angular/core';
-import { from, fromEvent, Observable, of } from 'rxjs';
+import { from, fromEvent, interval, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -55,8 +55,19 @@ export class RxjsComponent implements OnInit {
     })
 
     this.subjects$.subscribe(data=>{
+      const seqNumber$= interval(1000);
 
-      this.subjectName = data;
+      seqNumber$.subscribe(num =>{
+        if(num < 5 ){
+          console.log(data + num);
+        }
+       
+        
+      })
+
+
+      
+      // this.subjectName = data;
       
     })
 

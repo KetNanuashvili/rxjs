@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { from, Observable, of } from 'rxjs';
+import { Component, ElementRef, OnInit, viewChild, ViewChild } from '@angular/core';
+import { from, fromEvent, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -15,7 +15,11 @@ export class RxjsComponent implements OnInit {
     id:10,
     name: 'Keti'
   }
+  @ViewChild('validate')
+  validate: ElementRef;
 
+  @ViewChild('getLink')
+  getLink:ElementRef;
 
   subjectsArray = ['math', 'history', 'music', 'geography', 'science'];
   subjectName : string;
@@ -28,6 +32,10 @@ export class RxjsComponent implements OnInit {
 
 
   subjects$: Observable<string> = from (this.subjectsArray);
+
+
+
+
 
 
   ngOnInit(): void{
@@ -76,6 +84,25 @@ export class RxjsComponent implements OnInit {
 
     this.agents.subscribe(data =>{
       this.agentsName=data;
+      
+    })
+  }
+
+  rxJseventObservable(){
+    const btnObservable$ = fromEvent(this.validate?.nativeElement, 'click')
+
+    btnObservable$.subscribe(data=>{
+      console.log(data);
+      
+    })
+  }
+
+
+  getEvenetObservable(){
+    const aobservable$ = fromEvent(this.getLink?.nativeElement, 'mouseover');
+    aobservable$.subscribe(data=>{
+      
+      console.log(data);
       
     })
   }

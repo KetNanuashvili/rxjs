@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { debounceTime, take } from 'rxjs';
 
 
 @Component({
@@ -22,7 +22,9 @@ ngOnInit(): void {
     
   });
 
-  this.searchForm.get('name').valueChanges.pipe(
+  this.searchForm.get('name').valueChanges.
+  pipe(
+    take(2),
     debounceTime(3000)
   ).subscribe(data=>{
     console.log(data);

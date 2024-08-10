@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, take, takeWhile } from 'rxjs';
+import { debounceTime, from, Observable, of, take, takeLast, takeWhile } from 'rxjs';
 
 
 @Component({
@@ -12,6 +12,8 @@ export class SearchComponent implements OnInit {
 searchForm: FormGroup;
 name: FormControl;
 
+categories = ['Mobiles', 'TV', 'Chargers', 'Headphones'];
+category$: Observable<string>=from(this.categories);
 constructor(private Fb: FormBuilder){
 
 }
@@ -24,12 +26,19 @@ ngOnInit(): void {
 
   this.searchForm.get('name').valueChanges.
   pipe(
-    // take(2),
-    takeWhile((v) => this.checkCondition(v)),
+    // take(2), take N values
+    // takeWhile((v) => this.checkCondition(v)), take values till a condition  is true
+
+
     debounceTime(3000)
   ).subscribe(data=>{
     console.log(data);
-    
+    this.category$.pipe( //whereever you are sure about the data set, you need specific last emited values
+      takeLast(2)
+    ).subscribe( data2 => {
+      console.log(data2);
+      
+    })
   })
 
 }

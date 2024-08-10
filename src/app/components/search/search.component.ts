@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, take } from 'rxjs';
+import { debounceTime, take, takeWhile } from 'rxjs';
 
 
 @Component({
@@ -24,13 +24,18 @@ ngOnInit(): void {
 
   this.searchForm.get('name').valueChanges.
   pipe(
-    take(2),
+    // take(2),
+    takeWhile((v) => this.checkCondition(v)),
     debounceTime(3000)
   ).subscribe(data=>{
     console.log(data);
     
   })
 
+}
+
+checkCondition(value){
+  return value.length >5? false : true;
 }
 
 readValue(){ 

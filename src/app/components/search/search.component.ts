@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { count, debounceTime, distinct, elementAt, filter, first, from, last, Observable, of, skip, take, takeLast, takeWhile } from 'rxjs';
+import { count, debounceTime, distinct, elementAt, filter, first, from, last, max, min, Observable, of, skip, take, takeLast, takeWhile } from 'rxjs';
 
 
 @Component({
@@ -14,6 +14,11 @@ name: FormControl;
 
 categories = ['Mobiles', 'Chargers', 'TV', 'Some', 'Chargers', 'Headphones', 'TV'];
 category$: Observable<string>=from(this.categories);
+
+ranks =[1, 65,3, 89, 100, 400,6738, 10,5,90];
+
+rank$: Observable<number> = from (this.ranks);
+
 constructor(private Fb: FormBuilder){
 
 }
@@ -37,6 +42,20 @@ ngOnInit(): void {
   ).subscribe(data=>{
     console.log(data);
 
+    this.rank$.pipe(
+      // distinct(),
+
+      filter((value) =>this.filterNumber(value)),
+      // max()
+
+      min()
+    ).subscribe(data3=>{
+      // console.log('Max value is ' + data3);
+      console.log('Min value is ' + data3);
+      
+    })
+
+
     this.category$
     .pipe(
       distinct(),
@@ -59,6 +78,12 @@ ngOnInit(): void {
   })
 
 }
+
+filterNumber(v){
+  // return v<20? false: true;
+  return v > 30 ? false : true;
+}
+
 checCharCount(v){
   return v.length <10? true: false;
 }

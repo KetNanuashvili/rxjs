@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, elementAt, filter, first, from, last, Observable, of, take, takeLast, takeWhile } from 'rxjs';
+import { count, debounceTime, distinct, elementAt, filter, first, from, last, Observable, of, skip, take, takeLast, takeWhile } from 'rxjs';
 
 
 @Component({
@@ -12,7 +12,7 @@ export class SearchComponent implements OnInit {
 searchForm: FormGroup;
 name: FormControl;
 
-categories = ['Mobiles', 'TV', 'Chargers', 'Headphones'];
+categories = ['Mobiles', 'Chargers', 'TV', 'Some', 'Chargers', 'Headphones', 'TV'];
 category$: Observable<string>=from(this.categories);
 constructor(private Fb: FormBuilder){
 
@@ -37,6 +37,15 @@ ngOnInit(): void {
   ).subscribe(data=>{
     console.log(data);
 
+    this.category$
+    .pipe(
+      distinct(),
+      skip(2),
+      count()
+    ).subscribe(data2 => {
+      console.log(data2);
+      
+    })
     // this.category$.pipe( 
       //whereever you are sure about the data set, you need specific last emited values
       // takeLast(2)

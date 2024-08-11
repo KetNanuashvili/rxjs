@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, first, from, last, Observable, of, take, takeLast, takeWhile } from 'rxjs';
+import { debounceTime, elementAt, filter, first, from, last, Observable, of, take, takeLast, takeWhile } from 'rxjs';
 
 
 @Component({
@@ -26,24 +26,32 @@ ngOnInit(): void {
 
   this.searchForm.get('name').valueChanges.
   pipe(
+
+    filter((v) => this.checCharCount((v))
+  )
     // take(2), take N values
     // takeWhile((v) => this.checkCondition(v)), take values till a condition  is true
 
 
-    debounceTime(3000)
+    // debounceTime(3000)
   ).subscribe(data=>{
     console.log(data);
 
-    this.category$.pipe( //whereever you are sure about the data set, you need specific last emited values
+    // this.category$.pipe( 
+      //whereever you are sure about the data set, you need specific last emited values
       // takeLast(2)
       // first()
-      last()
-    ).subscribe( data2 => {
-      console.log(data2);
+      // last()
+    //   elementAt(3)
+    // ).subscribe( data2 => {
+    //   console.log(data2);
       
-    })
+    // })
   })
 
+}
+checCharCount(v){
+  return v.length <10? true: false;
 }
 
 checkCondition(value){

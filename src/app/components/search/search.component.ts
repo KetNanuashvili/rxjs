@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, from, Observable, of, take, takeLast, takeWhile } from 'rxjs';
+import { debounceTime, first, from, last, Observable, of, take, takeLast, takeWhile } from 'rxjs';
 
 
 @Component({
@@ -33,8 +33,11 @@ ngOnInit(): void {
     debounceTime(3000)
   ).subscribe(data=>{
     console.log(data);
+
     this.category$.pipe( //whereever you are sure about the data set, you need specific last emited values
-      takeLast(2)
+      // takeLast(2)
+      // first()
+      last()
     ).subscribe( data2 => {
       console.log(data2);
       
